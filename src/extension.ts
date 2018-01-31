@@ -28,18 +28,16 @@ class TerminalAutoShow {
 
     constructor() {
         this._terminal = window.createTerminal();
+        this.showTerminal();
     }
 
     doucmentClosed() {
-        console.log("Doc closed");
-        console.log(workspace.textDocuments);
         if (window.visibleTextEditors.length <= 0) {
             this.showTerminal();
         }
     }
 
     documentOpened() {
-        console.log("Doc opened");
         this.hideTerminal();
     }
 
