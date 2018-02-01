@@ -2,12 +2,13 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Disposable, window, workspace, Terminal, commands, Selection } from 'vscode';
+import { Disposable, window, workspace, Terminal, commands, Selection, TextEdit, TextEditor } from 'vscode';
 import { worker } from 'cluster';
 
 let Settings = {
     enable: true,
-    forceClose: true //If the terminal is not the active tab, should the panel be closed anyway? This is helpful when debugging
+    forceClose: true, //If the terminal is not the active tab, should the panel be closed anyway? This is helpful when debugging
+    nonFileNameViews: ['input']
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -35,20 +36,36 @@ class TerminalAutoShow {
         this.showTerminal();
     }
 
-    openedEditors() {
-        return window.visibleTextEditors;
+    isEditorsEmpty() {
+        const editors = window.visibleTextEditors;
+        for (let i = 0; i < editors.length; i++) {
+            console.log(editors[i]);
+            if (!this.isNonFileNameView(editors[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    isNonFileNameView(item: TextEditor) {
+        console.log(item);
+        for (const view in Settings.nonFileNameViews) {
+            if (item.document.fileName == Settings.nonFileNameViews[view]) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     doucmentClosed() {
-        if (this.openedEditors().length <= 0) {
+        if (this.isEditorsEmpty()) {
             this.showTerminal();
         }
     }
 
     documentOpened() {
-        if (this.openedEditors().length > 0) {
-            this.hideTerminal();
-        }
+        this.hideTerminal();
     }
 
     showTerminal() {
