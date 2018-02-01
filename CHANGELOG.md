@@ -5,9 +5,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.0.1] - 2018-01-29
 Initial release
-
-## [0.0.2] - 2018-01-30
-Fix for terminal not showing properly
-
-## [0.0.5] - 2018-01-30
-Updated package settings

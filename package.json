@@ -2,7 +2,7 @@
     "name": "terminalautoshow",
     "displayName": "TerminalAutoShow",
     "description": "",
-    "version": "0.0.4",
+    "version": "0.0.0",
     "publisher": "Snowlie",
     "engines": {
         "vscode": "^1.19.0"
@@ -15,12 +15,10 @@
     ],
     "main": "./out/extension",
     "contributes": {
-        "commands": [
-            {
-                "command": "terminalautoshow.Toggle",
-                "title": "Terminal Auto Show - Toggle"
-            }
-        ]
+        "commands": [{
+            "command": "terminalautoshow.Toggle",
+            "title": "Terminal Auto Show - Toggle"
+        }]
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
