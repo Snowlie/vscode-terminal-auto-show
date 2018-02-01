@@ -2,24 +2,28 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Disposable } from 'vscode';
-import { window } from 'vscode';
-import { workspace } from 'vscode';
-import { Terminal } from 'vscode';
+import { Disposable, window, workspace, Terminal, commands, Selection } from 'vscode';
+import { worker } from 'cluster';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
+let Settings = {
+    enable: true,
+    forceClose: true //If the terminal is not the active tab, should the panel be closed anyway? This is helpful when debugging
+}
+
 export function activate(context: vscode.ExtensionContext) {
-
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "terminalautoshow" is now active!');
-
     let autoShow = new TerminalAutoShow();
     let autoShowControl = new TerminalAutoShowController(autoShow);
-
+    //commands.registerCommand('terminalautoshow.Toggle', toggle);
     context.subscriptions.push(autoShow);
     context.subscriptions.push(autoShowControl);
+}
+
+function enableForceClose() {
+    Settings.forceClose = true;
+}
+
+function disableForceClose() {
+
 }
 
 class TerminalAutoShow {
@@ -28,18 +32,16 @@ class TerminalAutoShow {
 
     constructor() {
         this._terminal = window.createTerminal();
+        this.showTerminal();
     }
 
     doucmentClosed() {
-        console.log("Doc closed");
-        console.log(workspace.textDocuments);
         if (window.visibleTextEditors.length <= 0) {
             this.showTerminal();
         }
     }
 
     documentOpened() {
-        console.log("Doc opened");
         this.hideTerminal();
     }
 
@@ -49,6 +51,7 @@ class TerminalAutoShow {
     }
 
     hideTerminal() {
+        this._terminal.show(); //Have to show it to focus it and then close it
         this._terminal.hide();
         this._hidden = true;
     }
