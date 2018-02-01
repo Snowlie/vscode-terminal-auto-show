@@ -14,7 +14,12 @@
         "*"
     ],
     "main": "./out/extension",
-    "contributes": {},
+    "contributes": {
+        "commands": [{
+            "command": "terminalautoshow.Toggle",
+            "title": "Terminal Auto Show - Toggle"
+        }]
+    },
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p ./",
