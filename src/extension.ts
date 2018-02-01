@@ -35,14 +35,20 @@ class TerminalAutoShow {
         this.showTerminal();
     }
 
+    openedEditors() {
+        return window.visibleTextEditors;
+    }
+
     doucmentClosed() {
-        if (window.visibleTextEditors.length <= 0) {
+        if (this.openedEditors().length <= 0) {
             this.showTerminal();
         }
     }
 
     documentOpened() {
-        this.hideTerminal();
+        if (this.openedEditors().length > 0) {
+            this.hideTerminal();
+        }
     }
 
     showTerminal() {
